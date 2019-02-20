@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 
 import dao.UserDao
 import javax.inject.{Inject, Singleton}
-import models.Artists
+import models.User
 import play.api.libs.json._
 import play.api.mvc.{
   AbstractController,
