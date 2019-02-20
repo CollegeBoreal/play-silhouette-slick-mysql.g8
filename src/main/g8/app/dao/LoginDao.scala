@@ -21,6 +21,8 @@ trait LoginComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
     def providerKey: Rep[String] =
       column[String]("providerKey", O.Length(45, varying = true), O.PrimaryKey)
+    // scalastyle:on magic.number
+
 
     // scalastyle:off method.name
     override def * : ProvenShape[Login] =
