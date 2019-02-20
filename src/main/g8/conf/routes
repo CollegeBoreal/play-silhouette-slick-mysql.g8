@@ -7,38 +7,16 @@
 # GET     /                           controllers.HomeController.index
 
 ###
-# summary: Get a message
-# responses:
-#   200:
-#     description: Successfully retrieved a message
-#     schema:
-#       $"$"$ref: '#/definitions/models.Message'
-###
-GET     /api/message                controllers.MessageController.getMessage
-
-###
-# summary: Get a list of all products
-# responses:
-#   200:
-#     description: Successfully listed all products
-#     schema:
-#       type: array
-#       items:
-#           $"$"$ref: '#/definitions/models.Product'
-###
-GET     /api/product/all            controllers.ProductController.getAll
-
-###
-# summary: Get a list of all customers
+# summary: Get a list of all users
 # responses:
 #    200:
-#      description: Successfully listed all prodcuts
+#      description: Successfully listed all users
 #      schema:
 #        type: array
 #        items:
-#            $"$"$ref: '#/definitions/models.Customer'
+#            $"$"$ref: '#/definitions/models.User'
 ###
-#GET    /api/customer/all           controllers.CustomerController.getAll
+#GET    /api/user/all           controllers.UserController.getAll
 
 ### NoDocs ###
 GET     /api-docs                   controllers.Default.redirect(to="/assets/lib/swagger-ui/index.html?url=/assets/swagger.json")
