@@ -1,0 +1,3 @@
+
+scalastyleFailOnError := true
+scalastyleFailOnWarning := true
