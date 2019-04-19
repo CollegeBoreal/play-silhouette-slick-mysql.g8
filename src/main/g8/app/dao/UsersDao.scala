@@ -26,8 +26,8 @@ trait UserComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def number: Rep[String] =
       column[String]("number", O.Length(45, varying = true))
 
-    def email: Rep[String] =
-      column[String]("email", O.Length(45, varying = true))
+    def providerKey: Rep[String] =
+      column[String]("providerKey", O.Length(45, varying = true))
 
     def active: Rep[Boolean] = column[Boolean]("active")
 
@@ -35,7 +35,7 @@ trait UserComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
     // scalastyle:off method.name
     override def * : ProvenShape[User] =
-      (number, email, active, created, user).mapTo[User]
+      (number, providerKey, active, created, user).mapTo[User]
     // scalastyle:on method.name
 
   }
@@ -51,8 +51,7 @@ trait UserComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
 }
 
 @Singleton
-class UserDao @Inject()(
-    protected val dbConfigProvider: DatabaseConfigProvider)(
+class UserDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
     implicit executionContext: ExecutionContext)
     extends UserComponent
     with HasDatabaseConfigProvider[JdbcProfile] {
