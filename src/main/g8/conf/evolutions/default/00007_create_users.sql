@@ -19,4 +19,4 @@ CREATE TABLE `USERS` (
 
 # --- !Downs
 
-DROP TABLE artists;
+DROP TABLE `USERS`;
