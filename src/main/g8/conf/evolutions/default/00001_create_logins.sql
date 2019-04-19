@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS `LOGINS` (
   );
 # --- !Downs
 
-DROP TABLE logins;
+DROP TABLE `LOGINS`;
