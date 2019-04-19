@@ -16,7 +16,7 @@
 #        items:
 #            $"$"$ref: '#/definitions/models.User'
 ###
-#GET    /api/user/all           controllers.UserController.getAll
+GET    /api/user/all           controllers.UserController.getAll
 
 ### NoDocs ###
 GET     /api-docs                   controllers.Default.redirect(to="/assets/lib/swagger-ui/index.html?url=/assets/swagger.json")
