@@ -41,6 +41,6 @@ class PasswordDao @Inject()(
 
   val passwords = lifted.TableQuery[PasswordTable]
 
-  def getAll(): Future[Seq[Password]] = db.run(passwords.result)
+  def getAll: Future[Seq[Password]] = db.run(passwords.result)
 
 }
