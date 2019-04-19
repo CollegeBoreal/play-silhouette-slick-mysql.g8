@@ -1,9 +1,9 @@
 package models
 
-import java.sql.Timestamp
+import java.time.LocalDateTime
 
 case class User(providerKey: String,
-              number: String,
-              active: Boolean,
-              created: Timestamp,
-              user: Long = 0L)
+                number: String,
+                active: Boolean,
+                created: LocalDateTime,
+                user: Long = 0L)
