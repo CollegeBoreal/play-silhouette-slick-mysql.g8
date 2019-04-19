@@ -44,6 +44,6 @@ class LoginDao @Inject()(
 
   val logins = lifted.TableQuery[LoginTable]
 
-  def getAll(): Future[Seq[Login]] = db.run(logins.result)
+  def getAll: Future[Seq[Login]] = db.run(logins.result)
 
 }
