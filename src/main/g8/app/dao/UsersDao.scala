@@ -1,20 +1,27 @@
 package dao
 
+import java.sql.Timestamp
+import java.time.LocalDateTime
+
 import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 import slick.lifted
+
 import scala.concurrent.{ExecutionContext, Future}
 
 trait UserComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
+
   import profile.api._
   import slick.lifted.ProvenShape
 
   class UserTable(tag: Tag) extends Table[User](tag, "USERS") {
 
+    import UserTable._
+
     // scalastyle:off magic.number
-    def user: Rep[Int] = column[Int]("user", O.PrimaryKey, O.AutoInc)
+    def user: Rep[Long] = column[Long]("user", O.PrimaryKey, O.AutoInc)
 
     def number: Rep[String] =
       column[String]("number", O.Length(45, varying = true))
@@ -24,13 +31,21 @@ trait UserComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
     def active: Rep[Boolean] = column[Boolean]("active")
 
-    def created: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("created")
+    def created: Rep[LocalDateTime] = column[LocalDateTime]("created")
 
     // scalastyle:off method.name
     override def * : ProvenShape[User] =
-      (user ?, number, email, active, created) <> (User.tupled, User.unapply)
+      (number, email, active, created, user).mapTo[User]
     // scalastyle:on method.name
 
+  }
+
+  object UserTable {
+    implicit val localDateTimeColumnType: BaseColumnType[LocalDateTime] =
+      MappedColumnType.base[LocalDateTime, Timestamp](
+        Timestamp.valueOf,
+        _.toLocalDateTime
+      )
   }
 
 }
