@@ -5,5 +5,5 @@ Testing locally
 
 
 ```
-$ g8 file://../play-silhouette-slick.g
+$ g8 file://play-silhouette-slick.g8
 ```
