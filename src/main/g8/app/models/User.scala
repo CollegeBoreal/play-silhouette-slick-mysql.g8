@@ -1,8 +1,9 @@
 package models
 
-case class User(user: Option[Int],
-              providerKey: String,
+import java.sql.Timestamp
+
+case class User(providerKey: String,
               number: String,
               active: Boolean,
-              created: java.sql.Timestamp)
-
+              created: Timestamp,
+              user: Long = 0L)
