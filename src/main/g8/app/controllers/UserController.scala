@@ -1,9 +1,6 @@
 package controllers
 
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
-
-import dao.UserDao
+import daos.user.UserDAO
 import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.libs.json._
@@ -17,9 +14,8 @@ import play.api.mvc.{
 import scala.concurrent.ExecutionContext
 
 @Singleton()
-class UserController @Inject()(
-    cc: ControllerComponents,
-    userDao: UserDao)(implicit ec: ExecutionContext)
+class UserController @Inject()(cc: ControllerComponents, userDao: UserDAO)(
+    implicit ec: ExecutionContext)
     extends AbstractController(cc) {
 
   implicit val fmt: Format[User] = Json.format[User]

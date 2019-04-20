@@ -1,4 +1,4 @@
-package dao
+package daos.user
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
@@ -11,7 +11,7 @@ import slick.lifted
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait UserComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
+abstract class UserDTO { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   import profile.api._
   import slick.lifted.ProvenShape
@@ -47,19 +47,5 @@ trait UserComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
         _.toLocalDateTime
       )
   }
-
-}
-
-@Singleton
-class UserDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
-    implicit executionContext: ExecutionContext)
-    extends UserComponent
-    with HasDatabaseConfigProvider[JdbcProfile] {
-
-  import profile.api._
-
-  val users = lifted.TableQuery[UserTable]
-
-  def getAll: Future[Seq[User]] = db.run(users.result)
 
 }
