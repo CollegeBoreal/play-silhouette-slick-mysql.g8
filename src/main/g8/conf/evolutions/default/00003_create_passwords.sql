@@ -3,7 +3,7 @@
 # --- !Ups
 
 CREATE TABLE IF NOT EXISTS `PASSWORDS` (
-  `providerKey` VALCHAR(45) NOT NULL,
+  `providerKey` VARCHAR(45) NOT NULL,
   `hasher` TEXT NULL,
   `password` TEXT NULL,
   `salt` VARCHAR(255) NULL,
