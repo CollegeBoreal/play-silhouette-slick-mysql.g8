@@ -1,4 +1,4 @@
-# Sample data for passwords schema
+# --- Sample data for passwords schema
 
 # --- !Ups
 

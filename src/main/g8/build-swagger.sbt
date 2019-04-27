@@ -1,15 +1,12 @@
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
-
-swaggerDomainNameSpaces := Seq("models")
-
-libraryDependencies += "org.webjars" % "swagger-ui" % "3.13.3"
-
-// J2EE JAXB Related
-libraryDependencies ++= {
-  val xmlBindVersion = "2.2.11"
-  Seq(
-    "javax.xml.bind" % "jaxb-api" % xmlBindVersion,
-    "com.sun.xml.bind" % "jaxb-core" % xmlBindVersion,
-    "com.sun.xml.bind" % "jaxb-impl" % xmlBindVersion
-  )
-}
+ libraryDependencies ++= {
+   val swaggerUIVersion = "3.6.1"
+   Seq(
+     "io.swagger" %% "swagger-play2" % "1.6.1-SNAPSHOT",
+     "org.webjars" % "swagger-ui" % swaggerUIVersion,
+     specs2 % Test,
+     ehcache,
+     guice
+   )
+ }

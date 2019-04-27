@@ -3,13 +3,9 @@ package daos.user
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
-import javax.inject.{Inject, Singleton}
 import models.User
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import slick.lifted
-
-import scala.concurrent.{ExecutionContext, Future}
 
 abstract class UserDTO { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
@@ -35,7 +31,7 @@ abstract class UserDTO { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
     // scalastyle:off method.name
     override def * : ProvenShape[User] =
-      (number, providerKey, active, created, user).mapTo[User]
+      (number, providerKey, active, created, user) <> (User.tupled, User.unapply)
     // scalastyle:on method.name
 
   }

@@ -1,4 +1,3 @@
 package models
 
-case class Login(providerId: String, providerKey: Option[String])
-
+case class Login(provider: String, key: String)

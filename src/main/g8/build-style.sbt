@@ -1,3 +1,2 @@
-
 scalastyleFailOnError := true
 scalastyleFailOnWarning := true

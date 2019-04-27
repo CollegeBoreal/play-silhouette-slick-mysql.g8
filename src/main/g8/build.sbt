@@ -1,14 +1,14 @@
-organization := "$organization$"
+organization := "ca.collegeboreal"
 
-name := "$name$"
+name := "PlaySlickOauth2"
 
-description := "$app_description$"
+description := "Example Play App set up to use Slick with MySQL and Evolutions under Silhouette oAuth2 scheme"
 
 version := "1.0-SNAPSHOT"
 
 scalaVersion := "2.12.6"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala, SwaggerPlugin)
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 /*
 * Workaround for https://github.com/sbt/sbt/issues/630 when running travis tests on the template.
@@ -25,14 +25,14 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-testkit" % "2.5.11" % Test,
   "org.mockito" % "mockito-core" % "2.18.0" % Test
 )
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature",
-  "-language:postfixOps", "-language:reflectiveCalls")
 
-coverageExcludedPackages := "<empty>;router\\\\..*;dao\\\\..*;handlers\\\\.TrailingSlashRequestHandler"
-coverageMinimum := 75
-coverageFailOnMinimum := true
+scalacOptions ++= Seq(
+    "-unchecked"
+  , "-deprecation"
+  , "-feature"
+  , "-language:postfixOps"
+  , "-language:reflectiveCalls"
+)
 
-scalastyleFailOnError := true
-scalastyleFailOnWarning := true
 
-scalafmtOnCompile in Compile := true
+

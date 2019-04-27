@@ -19,8 +19,7 @@ abstract class LoginDTO { self: HasDatabaseConfigProvider[JdbcProfile] =>
     // scalastyle:on magic.number
 
     // scalastyle:off method.name
-    override def * : ProvenShape[Login] =
-      (providerId, providerKey ?) <> (Login.tupled, Login.unapply)
+    override def * : ProvenShape[Login] = (providerId, providerKey).mapTo[Login]
     // scalastyle:on method.name
 
   }
