@@ -1,3 +1,3 @@
 # Database
 
-![alt tag](silhouette.png)
+![alt tag](Silhouette.png)
