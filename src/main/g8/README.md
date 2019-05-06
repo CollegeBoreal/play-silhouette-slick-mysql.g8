@@ -84,6 +84,23 @@ _The token must belong to a user with Admin role_
 $ curl http://localhost:9000/api/auth/logout --header X-Auth-Token:$JWT_TOKEN --verbose
 ```
 
+```
+< HTTP/1.1 200 OK
+< Vary: Origin
+< Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+< X-Frame-Options: ALLOW-FROM http://*
+< X-XSS-Protection: 1; mode=block
+< X-Content-Type-Options: nosniff
+< Content-Security-Policy: frame-src * ;
+< X-Permitted-Cross-Domain-Policies: master-only
+< Date: Mon, 06 May 2019 19:34:49 GMT
+< Content-Type: application/json
+< Content-Length: 36
+< 
+* Connection #0 to host localhost left intact
+{"result":"logged out successfully"}
+```
+
 ## Database reload
 
 It is possible to reload database with based data with scripts:
