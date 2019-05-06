@@ -22,6 +22,8 @@ POST        /api/auth/register                                              cont
 
 POST        /api/auth/login                                                 controllers.CredentialAuthController.authenticate
 
+GET        /api/auth/logout                                                 controllers.CredentialAuthController.signOut
+
 GET         /api/badPassword                                                controllers.ApplicationController.badPassword
 
 GET         /swagger.json                                                   controllers.ApiHelpController.getResources
