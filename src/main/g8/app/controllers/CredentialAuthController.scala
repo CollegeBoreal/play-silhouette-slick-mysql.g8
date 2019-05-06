@@ -2,6 +2,7 @@ package controllers
 
 import javax.inject.Inject
 import com.mohiva.play.silhouette.api._
+import com.mohiva.play.silhouette.api.actions.SecuredActionBuilder
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.services.AuthenticatorService
@@ -25,7 +26,13 @@ import models.auth.DefaultEnv
 import play.api.Configuration
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.{Json, OFormat}
-import play.api.mvc.{AbstractController, Action, ControllerComponents, Result}
+import play.api.mvc.{
+  AbstractController,
+  Action,
+  AnyContent,
+  ControllerComponents,
+  Result
+}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -46,6 +53,12 @@ class CredentialAuthController @Inject()(
   implicit val emailCredentialFormat: OFormat[EmailCredential] =
     Json.format[EmailCredential]
 
+  val SecuredAction: SecuredActionBuilder[DefaultEnv, AnyContent] =
+    silhouette.SecuredAction
+  val authenticatorRepository: AuthenticatorService[JWTAuthenticator] =
+    silhouette.env.authenticatorService
+  val eventBus: EventBus = silhouette.env.eventBus
+
   @ApiOperation(value = "Get authentication token", response = classOf[Token])
   @ApiImplicitParams(
     Array(
@@ -59,10 +72,6 @@ class CredentialAuthController @Inject()(
   )
   def authenticate: Action[EmailCredential] =
     Action.async(parse.json[EmailCredential]) { implicit request =>
-      val authenticatorRepository: AuthenticatorService[JWTAuthenticator] =
-        silhouette.env.authenticatorService
-      val eventBus: EventBus = silhouette.env.eventBus
-
       val credentials = Credentials(request.body.email, request.body.password)
       val res = for {
         loginInfo <- credentialsProvider.authenticate(credentials)
@@ -89,4 +98,9 @@ class CredentialAuthController @Inject()(
           Forbidden
       }
     }
+  def signOut: Action[AnyContent] = SecuredAction.async { implicit request =>
+    val result: Result = Ok(Json.toJson("logged out successfully"))
+    silhouette.env.eventBus.publish(LogoutEvent(request.identity, request))
+    authenticatorRepository.discard(request.authenticator, result)
+  }
 }
