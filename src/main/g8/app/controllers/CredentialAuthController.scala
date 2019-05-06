@@ -99,7 +99,7 @@ class CredentialAuthController @Inject()(
       }
     }
   def signOut: Action[AnyContent] = SecuredAction.async { implicit request =>
-    val result: Result = Ok(Json.toJson("logged out successfully"))
+    val result: Result = Ok(Json.obj("result" -> "logged out successfully"))
     silhouette.env.eventBus.publish(LogoutEvent(request.identity, request))
     authenticatorRepository.discard(request.authenticator, result)
   }
