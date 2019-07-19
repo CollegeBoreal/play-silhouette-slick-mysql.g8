@@ -22,8 +22,8 @@ abstract class UserDTO { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def number: Rep[String] =
       column[String]("number", O.Length(45, varying = true))
 
-    def providerKey: Rep[String] =
-      column[String]("providerKey", O.Length(45, varying = true))
+    def password: Rep[String] =
+      column[String]("password", O.Length(45, varying = true))
 
     def active: Rep[Boolean] = column[Boolean]("active")
 
@@ -31,7 +31,7 @@ abstract class UserDTO { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
     // scalastyle:off method.name
     override def * : ProvenShape[User] =
-      (number, providerKey, active, created, user) <> (User.tupled, User.unapply)
+      (number, password, active, created, user) <> (User.tupled, User.unapply)
     // scalastyle:on method.name
 
   }

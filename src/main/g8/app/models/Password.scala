@@ -1,6 +1,6 @@
 package models
 
-case class Password(providerKey: String = "",
+case class Password(password: String = "",
                     hasher: String,
-                    password: String,
+                    secret: String,
                     salt: Option[String] = None)

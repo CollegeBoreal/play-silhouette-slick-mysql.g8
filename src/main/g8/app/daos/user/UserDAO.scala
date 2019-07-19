@@ -24,7 +24,7 @@ class UserDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
   def getAll: Future[Seq[User]] = db.run(users.result)
 
   override def retrieve(loginInfo: LoginInfo): Future[Option[User]] =
-    db.run(users.filter(_.providerKey === loginInfo.providerKey).result)
+    db.run(users.filter(_.password === loginInfo.providerKey).result)
       .map(_.headOption)
 
   def add(user: User): Future[Int] = db.run(users += user)

@@ -30,7 +30,7 @@ class PasswordDAO @Inject()(
     db.run {
       for {
         Some(fields) <- passwords
-          .filter(_.providerKey === loginInfo.providerKey)
+          .filter(_.password === loginInfo.providerKey)
           .result
           .map(_.headOption)
       } yield
@@ -44,11 +44,11 @@ class PasswordDAO @Inject()(
                    authInfo: PasswordInfo): Future[PasswordInfo] = {
     db.run {
         loginQuery(loginInfo).result >>
-          (passwords += Password(providerKey = loginInfo.providerKey,
+          (passwords += Password(password = loginInfo.providerKey,
                                  hasher = authInfo.hasher,
-                                 password = authInfo.password,
+                                 secret = authInfo.password,
                                  salt = authInfo.salt)) >>
-          passwords.filter(_.providerKey === loginInfo.providerKey).result
+          passwords.filter(_.password === loginInfo.providerKey).result
       }
       .map(_ => authInfo)
   }
@@ -65,14 +65,14 @@ class PasswordDAO @Inject()(
             cs match {
               case (_, Some(oldAuthInfo)) =>
                 passwords
-                  .filter(_.providerKey === oldAuthInfo.providerKey)
+                  .filter(_.password === oldAuthInfo.password)
                   .map(c => (c.hasher, c.password, c.salt))
                   .update((authInfo.hasher, authInfo.password, authInfo.salt))
               case (_, None) =>
                 passwords +=
                   Password(loginInfo.providerKey,
                            hasher = authInfo.hasher,
-                           password = authInfo.password,
+                           secret = authInfo.password,
                            salt = authInfo.salt)
             }
       }
@@ -82,7 +82,7 @@ class PasswordDAO @Inject()(
   override def remove(loginInfo: LoginInfo): Future[Unit] =
     db.run {
         for { (_, Some(oldAuthInfo)) <- joinAction(loginInfo).map(_.head) } yield
-          passwords.filter(_.providerKey === oldAuthInfo.providerKey).delete
+          passwords.filter(_.password === oldAuthInfo.password).delete
       }
       .map(_ => ())
 
@@ -96,6 +96,6 @@ class PasswordDAO @Inject()(
 
   private def joinAction(
       loginInfo: LoginInfo): DBIO[Seq[(Login, Option[Password])]] =
-    (loginQuery(loginInfo) joinLeft passwords on (_.providerKey === _.providerKey)).result
+    (loginQuery(loginInfo) joinLeft passwords on (_.providerKey === _.password)).result
 
 }

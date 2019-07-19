@@ -64,7 +64,7 @@ class SignUpController @Inject()(
           case None =>
             /* user not already exists */
             val user = User(number = "",
-                            providerKey = loginInfo.providerKey,
+                            password = loginInfo.providerKey,
                             active = true,
                             created = java.time.LocalDateTime.now)
 
