@@ -36,12 +36,12 @@ class PasswordDAO @Inject()(
       } yield
         Some(
           PasswordInfo(hasher = fields.hasher,
-                       password = fields.password,
+                       password = fields.secret,
                        salt = fields.salt))
     }
 
   override def add(loginInfo: LoginInfo,
-                   authInfo: PasswordInfo): Future[PasswordInfo] = {
+                   authInfo: PasswordInfo): Future[PasswordInfo] =
     db.run {
         loginQuery(loginInfo).result >>
           (passwords += Password(password = loginInfo.providerKey,
@@ -51,14 +51,13 @@ class PasswordDAO @Inject()(
           passwords.filter(_.password === loginInfo.providerKey).result
       }
       .map(_ => authInfo)
-  }
 
   override def update(loginInfo: LoginInfo,
                       authInfo: PasswordInfo): Future[PasswordInfo] =
     save(loginInfo, authInfo)
 
   override def save(loginInfo: LoginInfo,
-                    authInfo: PasswordInfo): Future[PasswordInfo] = {
+                    authInfo: PasswordInfo): Future[PasswordInfo] =
     db.run {
         for (cs <- joinAction(loginInfo).map(_.head))
           yield
@@ -66,7 +65,7 @@ class PasswordDAO @Inject()(
               case (_, Some(oldAuthInfo)) =>
                 passwords
                   .filter(_.password === oldAuthInfo.password)
-                  .map(c => (c.hasher, c.password, c.salt))
+                  .map(c => (c.hasher, c.secret, c.salt))
                   .update((authInfo.hasher, authInfo.password, authInfo.salt))
               case (_, None) =>
                 passwords +=
@@ -77,7 +76,6 @@ class PasswordDAO @Inject()(
             }
       }
       .map(_ => authInfo)
-  }
 
   override def remove(loginInfo: LoginInfo): Future[Unit] =
     db.run {
@@ -87,7 +85,7 @@ class PasswordDAO @Inject()(
       .map(_ => ())
 
   /*
-  Credentials Provider is always at 1
+  --TODO Credentials Provider is always at 1
    */
   private def loginQuery(
       loginInfo: LoginInfo): Query[loginDao.LoginTable, Login, Seq] =
