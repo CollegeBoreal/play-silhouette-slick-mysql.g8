@@ -9,12 +9,7 @@ import com.mohiva.play.silhouette.api.util.{Clock, PasswordHasherRegistry}
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import daos.user.UserDAO
-import io.swagger.annotations.{
-  Api,
-  ApiImplicitParam,
-  ApiImplicitParams,
-  ApiOperation
-}
+
 import models.auth.DefaultEnv
 import models.{SignUp, Token, User}
 import play.api.Configuration
@@ -24,7 +19,6 @@ import play.api.mvc.{AbstractController, Action, ControllerComponents}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-@Api(value = "Registration")
 class SignUpController @Inject()(
     components: ControllerComponents,
     userService: UserDAO,
@@ -41,18 +35,6 @@ class SignUpController @Inject()(
 
   implicit val signUpFormat: OFormat[SignUp] = Json.format[SignUp]
 
-  @ApiOperation(value = "Register and get authentication token",
-                response = classOf[Token])
-  @ApiImplicitParams(
-    Array(
-      new ApiImplicitParam(
-        value = "SignUp",
-        required = true,
-        dataType = "models.SignUp",
-        paramType = "body"
-      )
-    )
-  )
   def signUp: Action[JsValue] = Action.async(parse.json) { implicit request =>
     val authenticatorRepository = silhouette.env.authenticatorService
 

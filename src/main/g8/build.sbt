@@ -20,10 +20,7 @@ scalaSource in Test := baseDirectory.value / "tests"
 libraryDependencies ++= Seq(
   guice,
   ws,
-  "commons-io" % "commons-io" % "2.6",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
-  "com.typesafe.akka" %% "akka-testkit" % "2.5.11" % Test,
-  "org.mockito" % "mockito-core" % "2.18.0" % Test
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
 )
 
 scalacOptions ++= Seq(

@@ -1,6 +1,5 @@
 package models
 
-import io.swagger.annotations.{ApiModel, ApiModelProperty}
 import org.joda.time.DateTime
 import play.api.libs.json._
 
@@ -10,10 +9,7 @@ import play.api.libs.json._
   * @param token Id of token
   * @param expiresOn The expiration time
   */
-@ApiModel(description = "Token object")
-case class Token(
-    @ApiModelProperty(value = "token value", readOnly = true) token: String,
-    @ApiModelProperty(value = "expiry date", readOnly = true) expiresOn: DateTime)
+case class Token(token: String, expiresOn: DateTime)
 
 object Token {
 
@@ -23,7 +19,6 @@ object Token {
         "token" -> token.token,
         "expiresOn" -> token.expiresOn.toString
       )
-
       json
     }
   }

@@ -15,12 +15,7 @@ import com.mohiva.play.silhouette.impl.authenticators.JWTAuthenticator
 import com.mohiva.play.silhouette.impl.exceptions.IdentityNotFoundException
 import com.mohiva.play.silhouette.impl.providers._
 import daos.user.UserDAO
-import io.swagger.annotations.{
-  Api,
-  ApiImplicitParam,
-  ApiImplicitParams,
-  ApiOperation
-}
+
 import models.{EmailCredential, Token}
 import models.auth.DefaultEnv
 import play.api.Configuration
@@ -36,7 +31,6 @@ import play.api.mvc.{
 
 import scala.concurrent.{ExecutionContext, Future}
 
-@Api(value = "Authentication")
 class CredentialAuthController @Inject()(
     components: ControllerComponents,
     userService: UserDAO,
@@ -59,17 +53,6 @@ class CredentialAuthController @Inject()(
     silhouette.env.authenticatorService
   val eventBus: EventBus = silhouette.env.eventBus
 
-  @ApiOperation(value = "Get authentication token", response = classOf[Token])
-  @ApiImplicitParams(
-    Array(
-      new ApiImplicitParam(
-        value = "EmailCredential",
-        required = true,
-        dataType = "models.EmailCredential",
-        paramType = "body"
-      )
-    )
-  )
   def authenticate: Action[EmailCredential] =
     Action.async(parse.json[EmailCredential]) { implicit request =>
       val credentials = Credentials(request.body.email, request.body.password)
@@ -98,6 +81,7 @@ class CredentialAuthController @Inject()(
           Forbidden
       }
     }
+
   def signOut: Action[AnyContent] = SecuredAction.async { implicit request =>
     val result: Result = Ok(Json.obj("result" -> "logged out successfully"))
     silhouette.env.eventBus.publish(LogoutEvent(request.identity, request))

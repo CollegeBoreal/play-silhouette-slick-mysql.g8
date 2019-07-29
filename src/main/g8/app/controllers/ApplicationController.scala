@@ -1,9 +1,10 @@
 package controllers
 
+import javax.inject.Inject
+
 import com.mohiva.play.silhouette.api.Silhouette
 import com.mohiva.play.silhouette.api.actions.SecuredActionBuilder
-import io.swagger.annotations.{Api, ApiOperation}
-import javax.inject.Inject
+
 import models.auth.DefaultEnv
 import play.api.Logger
 import play.api.libs.json._
@@ -15,7 +16,6 @@ import play.api.mvc.{
 }
 
 import scala.concurrent.Future
-@Api(value = "Example data")
 class ApplicationController @Inject()(components: ControllerComponents,
                                       silhouette: Silhouette[DefaultEnv])
     extends AbstractController(components) {
@@ -24,7 +24,6 @@ class ApplicationController @Inject()(components: ControllerComponents,
   val SecuredAction: SecuredActionBuilder[DefaultEnv, AnyContent] =
     silhouette.SecuredAction
 
-  @ApiOperation(value = "Get bad password value")
   def badPassword: Action[AnyContent] = SecuredAction.async {
     implicit request =>
       if (logger.isDebugEnabled) {
