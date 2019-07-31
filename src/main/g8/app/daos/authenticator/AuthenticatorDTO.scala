@@ -16,8 +16,6 @@ trait AuthenticatorDTO {
   class AuthenticatorTable(tag: Tag)
       extends Table[Authenticator](tag, "AUTHENTICATORS") {
 
-    import AuthenticatorTable._
-
     // scalastyle:off magic.number
     def provider: Rep[Int] = column[Int]("provider", O.PrimaryKey)
 
@@ -46,14 +44,6 @@ trait AuthenticatorDTO {
 
     // scalastyle:on method.name
 
-  }
-
-  object AuthenticatorTable {
-    implicit val localDateTimeColumnType: BaseColumnType[LocalDateTime] =
-      MappedColumnType.base[LocalDateTime, Timestamp](
-        Timestamp.valueOf,
-        _.toLocalDateTime
-      )
   }
 
 }

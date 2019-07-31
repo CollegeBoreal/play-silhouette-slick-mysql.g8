@@ -28,6 +28,7 @@ import com.mohiva.play.silhouette.api.{
 }
 import com.mohiva.play.silhouette.crypto.{JcaCrypter, JcaCrypterSettings}
 import com.mohiva.play.silhouette.impl.authenticators._
+import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import com.mohiva.play.silhouette.impl.services.GravatarService
 import com.mohiva.play.silhouette.impl.util.{
   PlayCacheLayer,
@@ -175,6 +176,21 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   def provideAuthInfoRepository(
       passwordInfoDAO: DelegableAuthInfoDAO[PasswordInfo]): AuthInfoRepository =
     new DelegableAuthInfoRepository(passwordInfoDAO)
+
+  /**
+    * Provides the credentials provider.
+    *
+    * @param authInfoRepository The auth info repository implementation.
+    * @param passwordHasherRegistry The password hasher registry.
+    * @return The credentials provider.
+    */
+  @Provides
+  def provideCredentialsProvider(
+      authInfoRepository: AuthInfoRepository,
+      passwordHasherRegistry: PasswordHasherRegistry): CredentialsProvider = {
+
+    new CredentialsProvider(authInfoRepository, passwordHasherRegistry)
+  }
 
   /**
     * Provides the avatar service.

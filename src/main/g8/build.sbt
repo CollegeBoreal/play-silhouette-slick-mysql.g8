@@ -6,22 +6,19 @@ description := "Example Play App set up to use Slick with MySQL and Evolutions u
 
 version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.12.6"
-
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-/*
-* Workaround for https://github.com/sbt/sbt/issues/630 when running travis tests on the template.
-* If desired, you can remove this line and rename the /tests/ folder to /test/
-* You will need to do something different with the scripted test file /test
-**/
-scalaSource in Test := baseDirectory.value / "tests"
+scalaVersion := "2.13.0"
 
-libraryDependencies ++= Seq(
-  guice,
-  ws,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
-)
+libraryDependencies += guice
+libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test
+
+// Adds additional packages into Twirl
+//TwirlKeys.templateImports += "com.example.controllers._"
+
+// Adds additional packages into conf/routes
+// play.sbt.routes.RoutesKeys.routesImport += "com.example.binders._"
+
 
 scalacOptions ++= Seq(
     "-unchecked"

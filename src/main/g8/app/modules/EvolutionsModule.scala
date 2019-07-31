@@ -40,8 +40,8 @@ class CustomEvolutionsReader @Inject()(environment: Environment)
   // scalastyle:off cyclomatic.complexity
   def evolutions(db: String): Seq[Evolution] = {
 
-    val upsMarker = """^#.*!Ups.*$"$"$""".r
-    val downsMarker = """^#.*!Downs.*$"$"$""".r
+    val upsMarker = """^#.*!Ups.*$""".r
+    val downsMarker = """^#.*!Downs.*$""".r
 
     val UPS = "UPS"
     val DOWNS = "DOWNS"
@@ -66,11 +66,11 @@ class CustomEvolutionsReader @Inject()(environment: Environment)
       .sortBy(file => {
         val fileName = file.getName
         val nameAfterSqlNumber = fileName
-          .split("\\\\.")(0)
+          .split("\\.")(0)
           .split("_")
           .drop(1)
           .mkString("") + ".sql"
-        val sqlNumber = fileName.split("\\\\.")(0).split("_")(0).toInt
+        val sqlNumber = fileName.split("\\.")(0).split("_")(0).toInt
         val newPrefix = "%07d".format(sqlNumber)
         newPrefix + nameAfterSqlNumber
       })
@@ -81,7 +81,7 @@ class CustomEvolutionsReader @Inject()(environment: Environment)
         case (file, revision) => {
           val script = FileUtils.readFileToString(file, StandardCharsets.UTF_8)
           val parsed = Collections
-            .unfoldLeft(("", script.split('\\n').toList.map(_.trim))) {
+            .unfoldLeft(("", script.split('\n').toList.map(_.trim))) {
               case (_, Nil) => None
               case (context, lines) => {
                 val (some, next) = lines.span(l => !isMarker(l))
@@ -89,14 +89,15 @@ class CustomEvolutionsReader @Inject()(environment: Environment)
                   (next.headOption
                      .map(c => (mapUpsAndDowns(c), next.tail))
                      .getOrElse("" -> Nil),
-                   context -> some.mkString("\\n")))
+                   context -> some.mkString("\n")))
               }
             }
             .reverse
             .drop(1)
             .groupBy(i => i._1)
+            .view
             .mapValues {
-              _.map(_._2).mkString("\\n").trim
+              _.map(_._2).mkString("\n").trim
             }
           Evolution(
             revision,

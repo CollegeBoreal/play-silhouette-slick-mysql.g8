@@ -2,7 +2,7 @@ package daos.password
 
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.util.PasswordInfo
-import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
+//import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
 import daos.login.LoginDAO
 import javax.inject.{Inject, Singleton}
 import models.{Login, Password}

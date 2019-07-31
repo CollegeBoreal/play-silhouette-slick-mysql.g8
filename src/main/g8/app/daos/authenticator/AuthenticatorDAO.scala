@@ -22,7 +22,6 @@ class AuthenticatorDAO @Inject()(
     with AuthenticatorRepository[JWTAuthenticator] {
 
   import profile.api._
-  import AuthenticatorTable._
 
   val authenticators = lifted.TableQuery[AuthenticatorTable]
 
