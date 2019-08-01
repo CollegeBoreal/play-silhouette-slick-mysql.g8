@@ -66,11 +66,11 @@ class CustomEvolutionsReader @Inject()(environment: Environment)
       .sortBy(file => {
         val fileName = file.getName
         val nameAfterSqlNumber = fileName
-          .split("\\.")(0)
+          .split("\\\\.")(0)
           .split("_")
           .drop(1)
           .mkString("") + ".sql"
-        val sqlNumber = fileName.split("\\.")(0).split("_")(0).toInt
+        val sqlNumber = fileName.split("\\\\.")(0).split("_")(0).toInt
         val newPrefix = "%07d".format(sqlNumber)
         newPrefix + nameAfterSqlNumber
       })
