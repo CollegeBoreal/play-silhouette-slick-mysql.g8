@@ -10,12 +10,14 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 import slick.lifted
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.reflect.ClassTag
 
 @Singleton
 class PasswordDAO @Inject()(
     protected val dbConfigProvider: DatabaseConfigProvider,
-    loginDao: LoginDAO)(implicit executionContext: ExecutionContext)
+    loginDao: LoginDAO)(implicit val classTag: ClassTag[PasswordInfo])
     extends DelegableAuthInfoDAO[PasswordInfo]
     with PasswordDTO
     with HasDatabaseConfigProvider[JdbcProfile] {
@@ -97,3 +99,4 @@ class PasswordDAO @Inject()(
     (loginQuery(loginInfo) joinLeft passwords on (_.providerKey === _.password)).result
 
 }
+

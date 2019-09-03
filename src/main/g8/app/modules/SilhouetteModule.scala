@@ -41,6 +41,7 @@ import com.mohiva.play.silhouette.password.{
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
 import com.mohiva.play.silhouette.persistence.repositories.DelegableAuthInfoRepository
 import daos.authenticator.AuthenticatorDAO
+import daos.login.LoginDAO
 import daos.password.PasswordDAO
 import daos.user.UserDAO
 import models.User
@@ -74,9 +75,12 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     bind[IdentityService[User]].to[UserDAO]
     // @provides provideAuthenticatorService
     bind[AuthenticatorRepository[JWTAuthenticator]].to[AuthenticatorDAO]
-    // @provides provideAuthInfoRepository
-    bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordDAO]
   }
+
+  @Provides
+  def providePasswordDAO(dbConfigProvider: DatabaseConfigProvider,
+                         loginDao: LoginDAO): PasswordDAO =
+    new PasswordDAO(dbConfigProvider, loginDao)
 
   /**
     * Provides the HTTP layer implementation.
@@ -202,3 +206,4 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   def provideAvatarService(httpLayer: HTTPLayer): AvatarService =
     new GravatarService(httpLayer)
 }
+
