@@ -8,7 +8,6 @@ libraryDependencies ++= {
     "com.mohiva" %% "play-silhouette-persistence" % silhouetteVersion,
     "com.mohiva" %% "play-silhouette-password-bcrypt" % silhouetteVersion,
     "com.mohiva" %% "play-silhouette-crypto-jca" % silhouetteVersion,
-    "com.mohiva" %% "play-silhouette-totp" % silhouetteVersion,
     "com.mohiva" %% "play-silhouette-testkit" % silhouetteVersion % "test",
     "com.iheart" %% "ficus" % "1.4.7",
     "net.codingwell" %% "scala-guice" % "4.2.6",
