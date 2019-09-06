@@ -77,9 +77,17 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     bind[AuthenticatorRepository[JWTAuthenticator]].to[AuthenticatorDAO]
   }
 
+  /**
+    * Provides the Password Persistence layer.
+    *
+    * @param dbConfigProvider The Database Service
+    * @param loginDao The Login Data Access Object
+    * @return The Password DAO used to store passwords
+    */
   @Provides
-  def providePasswordDAO(dbConfigProvider: DatabaseConfigProvider,
-                         loginDao: LoginDAO): PasswordDAO =
+  def providePasswordDAO(
+      dbConfigProvider: DatabaseConfigProvider,
+      loginDao: LoginDAO): DelegableAuthInfoDAO[PasswordInfo] =
     new PasswordDAO(dbConfigProvider, loginDao)
 
   /**
@@ -206,4 +214,3 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   def provideAvatarService(httpLayer: HTTPLayer): AvatarService =
     new GravatarService(httpLayer)
 }
-
